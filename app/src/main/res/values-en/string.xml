@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">My Places</string>
+    <string name="action_settings">Settings</string>
+    <string name="accion_mostrar">Show Places</string>
+    <string name="accion_acerca_de">About</string>
+    <string name="accion_salir">Exit</string>
+    <string name="accion_preferencias">Preferences</string>
+</resources>
