@@ -1,6 +1,7 @@
 package mislugares.example.com.mislugares;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,7 +11,6 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 
 import bussiness.Lugar;
-import bussiness.Lugares;
 
 /**
  * Adaptador para ListView
@@ -39,7 +39,8 @@ public class AdaptadorLugares extends BaseAdapter {
                         ViewGroup padre) {
 
         //Obtenemos el lugar para esa posición
-        Lugar lugar = Lugares.elemento(posicion);
+        //Lugar lugar = MainActivity.lugares.elemento(posicion);
+        Lugar lugar = MainActivity.lugares.elementoPorIndex(posicion);
 
         //Para la primera llamada a getView(), este parámetro será nulo y tendremos que crear
         // una nueva vista e inflarla con el inflater desde un XML (este proceso puede ser algo lento).
@@ -106,7 +107,8 @@ public class AdaptadorLugares extends BaseAdapter {
      * @return
      */
     public int getCount() {
-        return Lugares.size();
+        //return LugaresRAM.size();
+        return MainActivity.lugares.size();
     }
 
     /**
@@ -115,7 +117,8 @@ public class AdaptadorLugares extends BaseAdapter {
      * @return
      */
     public Object getItem(int posicion) {
-        return Lugares.elemento(posicion);
+        //return LugaresRAM.elemento(posicion);
+        return MainActivity.lugares.elementoPorIndex(posicion);
     }
 
     /**
@@ -124,6 +127,6 @@ public class AdaptadorLugares extends BaseAdapter {
      * @return
      */
     public long getItemId(int posicion) {
-        return posicion;
+        return MainActivity.lugares.elementoPorIndex(posicion).getId();
     }
 }

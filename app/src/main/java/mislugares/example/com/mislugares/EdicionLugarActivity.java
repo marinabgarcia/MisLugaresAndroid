@@ -3,6 +3,7 @@ package mislugares.example.com.mislugares;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ArrayAdapter;
@@ -43,7 +44,8 @@ public class EdicionLugarActivity extends AppCompatActivity {
         ArrayAdapter<String> adaptador = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, TipoLugar.getNombres());
         adaptador.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         tipo.setAdapter(adaptador);
-        tipo.setSelection(lugar.getTipo().ordinal());
+        if(lugar.getTipo()!=null)
+            tipo.setSelection(lugar.getTipo().ordinal());
 
         //Nombre
         nombre = (EditText) findViewById(R.id.nombre);
@@ -91,6 +93,9 @@ public class EdicionLugarActivity extends AppCompatActivity {
                 lugar.setUrl(url.getText().toString());
                 lugar.setComentario(comentario.getText().toString());
 
+                //Actualizo lugar
+                MainActivity.lugares.actualiza((int) id,lugar);
+
                 //Devuelvo resultado OK a la actividad que la llamo
                 Intent intent = new Intent();
                 setResult(RESULT_OK, intent);
@@ -98,6 +103,9 @@ public class EdicionLugarActivity extends AppCompatActivity {
                 return true;
 
             case R.id.accion_cancelar:
+                //Verifico que algún campo este completo
+                if(lugar.getDireccion()==null && lugar.getUrl()==null && lugar.getComentario()==null && lugar.getNombre()==null && lugar.getTelefono()==0)
+                    MainActivity.lugares.borrar((int) id);
                 //Directamente cierro la actividad y vuelve a la actividad que la llamo
                 finish();
                 return true;

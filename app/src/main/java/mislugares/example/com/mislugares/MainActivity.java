@@ -5,27 +5,33 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.EditText;
 
-import bussiness.Lugares;
+import datos.LugaresBD;
+import datos.LugaresRAM;
 
 /**
  * Actividad principal, desde aca inicio app
  */
 public class MainActivity extends AppCompatActivity {
-    public static Lugares lugares = new Lugares();
+    //public static LugaresRAM lugares = new LugaresRAM();
+    public static LugaresBD lugares;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        //Esta inicialización ya no puede hacerse en la declaración porque necesitamos conocer
+        // el contexto que se pasa como parámetro.
+        lugares = new LugaresBD(this);
 
         //Toolbar correspondiente a la AppBar de MaterialDesign
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -40,8 +46,15 @@ public class MainActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                //Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                  //      .setAction("Action", null).show();
+                //Comenzamos creando un nuevo lugar en la base e datos cuyo identificaor va a ser _id.
+                long _id = lugares.nuevo();
+                //Lanzar la actividad EdicionLugarActivity para que el usuario rellene los datos del lugar
+                Log.w("Creo un nuevo lugar", String.valueOf(_id));
+                Intent i = new Intent(MainActivity.this,EdicionLugarActivity.class);
+                i.putExtra("id", _id);
+                startActivity(i);
             }
         });
 

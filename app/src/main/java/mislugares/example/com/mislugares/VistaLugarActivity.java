@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.ResolveInfo;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
@@ -81,7 +82,7 @@ public class VistaLugarActivity extends AppCompatActivity {
         tipo.setText(lugar.getTipo().getTexto());
 
         //Dirección
-        if (lugar.getDireccion().isEmpty()) {
+        if (lugar.getDireccion() != null && lugar.getDireccion().isEmpty()) {
             findViewById(R.id.direccion).setVisibility(View.GONE);
         } else {
             TextView direccion = (TextView) findViewById(R.id.direccion);
@@ -97,7 +98,7 @@ public class VistaLugarActivity extends AppCompatActivity {
         }
 
         //Url
-        if (lugar.getUrl().isEmpty()) {
+        if (lugar.getUrl() != null && lugar.getUrl().isEmpty()) {
             findViewById(R.id.url).setVisibility(View.GONE);
         } else {
             TextView url = (TextView) findViewById(R.id.url);
@@ -105,7 +106,7 @@ public class VistaLugarActivity extends AppCompatActivity {
         }
 
         //Comentario
-        if (lugar.getComentario().isEmpty()) {
+        if (lugar.getComentario() != null && lugar.getComentario().isEmpty()) {
             findViewById(R.id.comentario).setVisibility(View.GONE);
         } else {
             TextView comentario = (TextView) findViewById(R.id.comentario);
@@ -131,6 +132,7 @@ public class VistaLugarActivity extends AppCompatActivity {
                     public void onRatingChanged(RatingBar ratingBar,
                                                 float valor, boolean fromUser) {
                         lugar.setValoracion(valor);
+                        MainActivity.lugares.actualiza((int) id, lugar);
                     }
                 });
         //Foto
@@ -207,14 +209,15 @@ public class VistaLugarActivity extends AppCompatActivity {
             //Repintar
             findViewById(R.id.scrollView1).invalidate();
             //Vuelve de la galeria
-        } else if (requestCode == RESULTADO_GALERIA
-                && resultCode == Activity.RESULT_OK) {
+        } else if (requestCode == RESULTADO_GALERIA && resultCode == Activity.RESULT_OK) {
             lugar.setFoto(data.getDataString());
+            MainActivity.lugares.actualiza((int) id, lugar);
             ponerFoto(imageView, lugar.getFoto());
             //Vuelve de tomar un foto
         } else if (requestCode == RESULTADO_FOTO && resultCode == Activity.RESULT_OK
                 && lugar != null && uriFoto != null) {
             lugar.setFoto(uriFoto.toString());
+            MainActivity.lugares.actualiza((int) id, lugar);
             ponerFoto(imageView, lugar.getFoto());
         }
     }
@@ -222,6 +225,7 @@ public class VistaLugarActivity extends AppCompatActivity {
     /**
      * Este método crea una intención indicando que queremos obtener contenido, que pueda ser abierto y que además sea de tipo imagen y de cualquier subtipo. Típicamente se abrirá la aplicación galería de fotos (u otra similar).
      * Como necesitamos una respuesta, usamos startActivityForResult() con el código adecuado.
+     *
      * @param view
      */
     public void galeria(View view) {
@@ -237,6 +241,7 @@ public class VistaLugarActivity extends AppCompatActivity {
     /**
      * Este método comienza verificando que nos han pasado algún archivo válido en URI. Si es así, lo asigna a imageView.
      * En caso contrario, se le asigna un Bitmap igual a null, que es equivalente a que no se represente ninguna imagen.
+     *
      * @param imageView
      * @param uri
      */
@@ -260,6 +265,7 @@ public class VistaLugarActivity extends AppCompatActivity {
      * El objetivo que se persigue es que, al crear un nuevo fichero, su nombre nunca coincida con uno anterior.
      * Finalmente se añade la extensión del fichero. En la última línea llamamos a startActivityForResult()
      * con el código adecuado.
+     *
      * @param view
      */
     public void tomarFoto(View view) {
@@ -274,6 +280,7 @@ public class VistaLugarActivity extends AppCompatActivity {
 
     /**
      * Cargar fotografías de forma eficiente
+     *
      * @param contexto
      * @param uri
      * @param maxAncho
@@ -301,6 +308,7 @@ public class VistaLugarActivity extends AppCompatActivity {
 
     /**
      * Método para mostrar mapa
+     *
      * @param view
      */
     public void verMapa(View view) {
@@ -322,6 +330,7 @@ public class VistaLugarActivity extends AppCompatActivity {
 
     /**
      * Método para lanzar intención implicita para marcar número
+     *
      * @param view
      */
     public void llamadaTelefono(View view) {
@@ -330,6 +339,7 @@ public class VistaLugarActivity extends AppCompatActivity {
 
     /**
      * Método para lanzar intención implicita para visualizar página web
+     *
      * @param view
      */
     public void pgWeb(View view) {

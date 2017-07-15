@@ -1,6 +1,7 @@
 package bussiness;
 
 public class Lugar {
+    private int id;
     private String nombre;
     private String direccion;
     private GeoPunto posicion;
@@ -11,22 +12,22 @@ public class Lugar {
     private long fecha;
     private float valoracion;
 
-    public Lugar(String nombre, String direccion, double longitud, double latitud, TipoLugar tipo, int telefono, String url, String comentario, int valoracion){
-        fecha=System.currentTimeMillis();
-        posicion=new GeoPunto(longitud,latitud);
-        this.nombre=nombre;
-        this.direccion=direccion;
-        this.tipo=tipo;
-        this.telefono=telefono;
-        this.url=url;
-        this.comentario=comentario;
-        this.valoracion=valoracion;
+    public Lugar(String nombre, String direccion, double longitud, double latitud, TipoLugar tipo, int telefono, String url, String comentario, int valoracion) {
+        fecha = System.currentTimeMillis();
+        posicion = new GeoPunto(longitud, latitud);
+        this.nombre = nombre;
+        this.direccion = direccion;
+        this.tipo = tipo;
+        this.telefono = telefono;
+        this.url = url;
+        this.comentario = comentario;
+        this.valoracion = valoracion;
     }
 
     public Lugar() {
         fecha = System.currentTimeMillis();
-        posicion = new GeoPunto(0,0);
-        tipo= TipoLugar.OTROS;
+        posicion = new GeoPunto(0, 0);
+        tipo = TipoLugar.OTROS;
     }
 
     public String getNombre() {
@@ -111,7 +112,17 @@ public class Lugar {
         this.tipo = tipo;
     }
 
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
     @Override
+
     public String toString() {
         return "Lugar{" +
                 "nombre='" + nombre + '\'' +
